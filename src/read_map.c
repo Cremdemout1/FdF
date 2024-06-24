@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yohan <yohan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 14:46:00 by ycantin           #+#    #+#             */
-/*   Updated: 2024/06/23 11:47:49 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/06/24 11:58:00 by yohan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,13 @@ void	find_dimensions(t_fdf *data, char *file)
 	data->height = y;
 }
 
-void	assign_z(t_fdf *data, char *file)
+void	assign_z(t_fdf *data, int fd)
 {
-	int		fd;
 	int		x;
 	int		i;
 	char	*line;
 	char	**array;
 
-	fd = open(file, O_RDONLY);
 	i = 0;
 	while (1)
 	{
@@ -98,16 +96,21 @@ void	assign_z(t_fdf *data, char *file)
 void	read_map(t_fdf *data, char *filename)
 {
 	int	i;
+	int	fd;
 
 	i = 0;
 	find_dimensions(data, filename);
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		return ;
 	data->z_matrix = malloc(sizeof(int *) * data->height);
 	while (i < data->height)
 	{
 		data->z_matrix[i] = malloc(sizeof(int) * data->width);
 		i++;
 	}
-	assign_z(data, filename);
+	assign_z(data, fd);
+	close(fd);
 }
 // data->colors = malloc (sizeof (int*) * data->height);
 // data->colors[i] = malloc (sizeof(int) * data->width);
