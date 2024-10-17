@@ -6,13 +6,13 @@
 #    By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/30 16:13:02 by ycantin           #+#    #+#              #
-#    Updated: 2024/06/23 11:20:16 by ycantin          ###   ########.fr        #
+#    Updated: 2024/10/17 18:50:49 by ycantin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBFT_DIR = ./includes/libft
 LIBFT = $(LIBFT_DIR)/libft.a
-NAME = fil-de-fer
+NAME = fdf
 CC = cc
 FLAGS = -Wall -Wextra -Werror -g
 DEPS = -Iminilibx-linux -Lminilibx-linux -lmlx -lXext -lX11 -lm

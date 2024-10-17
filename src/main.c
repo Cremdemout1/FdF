@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 14:44:46 by ycantin           #+#    #+#             */
-/*   Updated: 2024/10/09 14:54:03 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/10/17 20:18:28 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,32 @@
 
 void	init_window(t_fdf *data)
 {
+	int	iso_center_x;
+	int	iso_center_y;
+
 	data->mlx_ptr = mlx_init();
 	data->win_ptr = mlx_new_window(data->mlx_ptr, WIDTH, HEIGHT, "fil de fer");
-	data->morph.zoom = (WIDTH / data->width) / 3;
-	// data->morph.offset_x = (WIDTH - data->width) / 2;
-	// data->morph.offset_y = (HEIGHT - data->width) / 2;
-	// Calculate initial isometric center based on the grid dimensions
-	int iso_center_x = (data->width * data->morph.zoom) / 2;
-	int iso_center_y = (data->height * data->morph.zoom) / 2;
-
-	// Set initial offsets based on the isometric center
-	data->morph.offset_x = (WIDTH / 2) - iso_center_x;
-	data->morph.offset_y = (HEIGHT / 2) - iso_center_y;
-
-	data->morph.rotate_x = 1.5;
-	data->morph.rotate_y = 1.5;
-	data->morph.rotate_z = M_PI;
-	data->angle = 0.5;
-	data->lod_level = 1;
-	data->theme.base = 0xffffff;
-	data->theme.add_on = 0x000000;
+	if (data->height && data->width)
+	{
+		data->morph.zoom = (WIDTH / data->width) / 3;
+		iso_center_x = (data->width * data->morph.zoom) / 2;
+		iso_center_y = (data->height * data->morph.zoom) / 2;
+		data->morph.offset_x = (WIDTH / 2) - iso_center_x;
+		data->morph.offset_y = (HEIGHT / 2) - iso_center_y;
+		data->morph.rotate_x = 1.5;
+		data->morph.rotate_y = 1.5;
+		data->morph.rotate_z = M_PI;
+		data->angle = 0.5;
+		data->lod_level = 1;
+		data->theme.base = 0xffffff;
+		data->theme.add_on = 0x000000;
+	}
 }
 
 int	destroy_data(t_fdf *data)
 {
+	if (!data->key)
+		data->img_ptr = mlx_new_image(data->mlx_ptr, WIDTH, HEIGHT);
 	destroy(data);
 	return (0);
 }
@@ -53,8 +55,8 @@ int	main(int argc, char **argv)
 	fd = open(argv[1], O_RDONLY);
 	if (arg_validity(argv[1]) == 0 || fd < 1)
 	{
-		write(1, "file not found\n", 16);
-		exit(1);
+		write(2, "file not found\n", 15);
+		exit(0);
 	}
 	close(fd);
 	read_map(&data, argv[1]);

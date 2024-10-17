@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:43:51 by ycantin           #+#    #+#             */
-/*   Updated: 2024/06/23 11:38:34 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/10/17 20:25:27 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	destroy(t_fdf *data)
 		}
 		free(data->z_matrix);
 	}
-	exit(1);
+	exit(0);
 }
 
 void	independent(t_fdf *data, int key)
@@ -69,7 +69,7 @@ void	themes(t_fdf *data, int key)
 		data->theme.add_on = Y_ADD;
 		initiate_structure(data);
 	}
-	if (key == XK_H)
+	else if (key == XK_H)
 	{
 		if (data->img_ptr)
 			mlx_destroy_image(data->mlx_ptr, data->img_ptr);
@@ -77,7 +77,7 @@ void	themes(t_fdf *data, int key)
 		data->theme.add_on = B_ADD;
 		initiate_structure(data);
 	}
-	if (key == XK_J)
+	else if (key == XK_J)
 	{
 		if (data->img_ptr)
 			mlx_destroy_image(data->mlx_ptr, data->img_ptr);
@@ -85,4 +85,24 @@ void	themes(t_fdf *data, int key)
 		data->theme.add_on = R_ADD;
 		initiate_structure(data);
 	}
+}
+
+void	write_menu(t_fdf *data)
+{
+	int	c;
+
+	c = 0xafafad;
+	mlx_string_put(data->mlx_ptr, data->win_ptr, 5, 30, c, "CONTROL MENU:");
+	mlx_string_put(data->mlx_ptr, data->win_ptr, 5, 60, c,
+		"START:           enter");
+	mlx_string_put(data->mlx_ptr, data->win_ptr, 5, 90, c,
+		"TRANSLATE MODEL: w   a   s   d");
+	mlx_string_put(data->mlx_ptr, data->win_ptr, 5, 120, c,
+		"ROTATE MODEL:    o   p   k   l");
+	mlx_string_put(data->mlx_ptr, data->win_ptr, 5, 150, c,
+		"ZOOM IN/OUT:     m  n");
+	mlx_string_put(data->mlx_ptr, data->win_ptr, 5, 210, c,
+		"RESET:    r");
+	mlx_string_put(data->mlx_ptr, data->win_ptr, 5, 240, c,
+		"ENDLESS ROT:     t");
 }

@@ -6,7 +6,7 @@
 /*   By: ycantin <ycantin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/09 16:39:22 by ycantin           #+#    #+#             */
-/*   Updated: 2024/10/09 15:05:57 by ycantin          ###   ########.fr       */
+/*   Updated: 2024/10/17 20:51:51 by ycantin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,17 @@ void	initiate_structure(t_fdf *data)
 	write_menu(data);
 }
 
+int	escape_hook(int key, t_fdf *data)
+{
+	if (key == XK_ESCAPE)
+	{
+		if (!data->key)
+			data->img_ptr = mlx_new_image(data->mlx_ptr, WIDTH, HEIGHT);
+		destroy(data);
+	}
+	return (key);
+}
+
 int	hook(int key, t_fdf *data)
 {
 	if (data->key == 0 && key == XK_RETURN)
@@ -27,21 +38,23 @@ int	hook(int key, t_fdf *data)
 		data->key = 1;
 		initiate_structure(data);
 	}
-	else if (data->key == 1 && (key == XK_A || key == XK_D || key == XK_W
-			|| key == XK_S))
-		translate(key, data);
-	else if (data->key == 1 && (key == XK_N || key == XK_M))
-		zoom(key, data);
-	else if (data->key == 1 && (key == XK_P || key == XK_O || key == XK_K
-			|| key == XK_L || key == XK_I))
-		rotate(key, data);
-	else if (key == XK_R)
-		reset(data);
-	else if (key == XK_T || key == XK_Y)
-		independent(data, key);
-	else if (data->key == 1 && (key == XK_G || key == XK_H || key == XK_J))
-		themes(data, key);
-	else if (key == XK_ESCAPE)
-		destroy(data);
+	if (data->height && data->width)
+	{
+		if (data->key == 1 && (key == XK_A || key == XK_D || key == XK_W
+				|| key == XK_S))
+			translate(key, data);
+		else if (data->key == 1 && (key == XK_N || key == XK_M))
+			zoom(key, data);
+		else if (data->key == 1 && (key == XK_P || key == XK_O || key == XK_K
+				|| key == XK_L || key == XK_I))
+			rotate(key, data);
+		else if (data->key == 1 && key == XK_R)
+			reset(data);
+		else if (data->key == 1 && key == XK_T)
+			independent(data, key);
+		else if (data->key == 1 && (key == XK_G || key == XK_H || key == XK_J))
+			themes(data, key);
+	}
+	escape_hook(key, data);
 	return (key);
 }
